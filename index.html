@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Title</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./dist/reset.css" />
+    <link rel="stylesheet" href="./dist/reveal.css" />
+    <link rel="stylesheet" href="./dist/theme/serif.css" id="theme" />
+    <link rel="stylesheet" href="./css/highlight/base16/zenburn.css" />
+
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template">
+
+## To Buy or Not to Buy
+
+#### 王伟杰 李志民 戴卿
+
+##### 2023-4-11
+</script></section><section ><section data-markdown><script type="text/template">
+## I/O Introduction
+</script></section><section data-markdown><script type="text/template">
+### Input
+
+![image-20230406133447350](assets/image-20230406133447350.png)
+</script></section><section data-markdown><script type="text/template">
+### Output
+
+![image-20230406133909792](assets/image-20230406133909792.png)
+</script></section></section><section ><section data-markdown><script type="text/template">
+## Data Struture
+</script></section><section data-markdown><script type="text/template">
+### `map<char,int> mp`
+
+​	将我们需要珠子的颜色映射到一个编号上面，存储为一个`map`数据结构。
+</script></section><section data-markdown><script type="text/template">
+### `struct Strand`
+
+存储每条strand的信息的数据结构。它包含以下信息：
+
+<font size="6"> 
+
+- `las`: 这一串中有多少我们不需要的珠子
+- `val`: 这一串中我们需要的珠子
+- `cnt[]`: 这一串中每种我们需要的珠子有多少个
+
+</font><style type="text/css"> {text-align: left;}</style>
+</script></section><section data-markdown><script type="text/template">
+### `cnt_target[BEAD], cnt_now[BEAD]`
+
+- `cnt_target`: 需要的每种颜色的珠子数量
+- `cnt_now`: 现在每种需要的珠子我们有多少个
+</script></section></section><section  data-markdown><script type="text/template">
+## Procedure
+
+![image-20230406141436720](assets/image-20230406141436720.png)
+
+![image-20230406141423820](assets/image-20230406141423820.png)
+</script></section><section ><section data-markdown><script type="text/template">
+## Innovation
+</script></section><section data-markdown><script type="text/template">
+### Preprocessing
+
+这个程序中我们对珠子的存储方式进行了预处理，我们不是使用0-61分别代表不同的62种珠子，而是仅仅对需要的珠子赋予一个索引，存储在map中。并且在读入商店中卖的strand的时候，就计算出每个strand中有多少我们需要的珠子、多少不需要的珠子和每种需要的珠子分别有多少个，并根据有效珠子和无效珠子的个数进行排序，方便后面运算。<style type="text/css"> p {text-align: left;}</style>
+</script></section><section data-markdown><script type="text/template">
+### Pre-Judgment
+
+如果买完商店里所有的strand都不能符合我们的要求，那么这道题的输出是"No"。通过backtrack算法进行计算这种情况的时间复杂度是O(m2^n)，这是很高的时间复杂度，所以我们针对这种情况做了优化。
+</script></section><section data-markdown><script type="text/template">
+我们通过Preprocessing部分做的排序，可以获取商店里所有strands的有效信息排序情况，按照这个顺序依次	购买，判断是否符合要求，如果能够符合要求，就正常进入backtrack程序，如果不行就直接输出结果，这样可以将"No solution"情况的时间复杂度降低到O(n*mlogn)。<style type="text/css"> p {text-align: left;}</style>
+</script></section><section data-markdown><script type="text/template">
+### Pruning
+
+在回溯算法中，我们对每一步都进行剪枝。如果在一个步骤中计算的`las`超过当前最小值`las`，我们退出该步骤并返回到前一步骤以继续搜索。<style type="text/css"> p {text-align: left;}</style>
+</script></section></section><section ><section data-markdown><script type="text/template">
+## Testing Results
+</script></section><section data-markdown><script type="text/template">
+```
+\code\output> main.exe
+Please choose whether to read files or input from the console
+1. Read from file
+2. Input from console
+1
+Please enter the read file name
+test.txt
+Yes 3
+```
+
+
+</script></section></section><section ><section data-markdown><script type="text/template">
+## Analysis
+</script></section><section data-markdown><script type="text/template">
+### Pre-Operation
+
+在map中的操作时间复杂度为O(logm)，读入预处理对一个strand的长度进行处理，所以时间复杂度为O(∑len * log m)。对于"No Solution"情况的判断时间复杂度为O(n*m)。
+</script></section><section data-markdown><script type="text/template">
+### backtrack
+
+回溯算法的时间复杂度为O(m*2^{n})。因为程序包含剪枝，所以实际时间复杂度要远低于最坏情况。
+</script></section><section data-markdown><script type="text/template">
+### Space complexity
+
+此程序空间复杂度为O(n*m)，主要用于存储所有strands的信息。
+</script></section></section><section  data-markdown><script type="text/template">
+## 谢谢大家！</script></section></div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/highlight/highlight.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/math/math.js"></script>
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        slideNumber: true,
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath
+        ]
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {}, queryOptions);
+    </script>
+
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+</html>
