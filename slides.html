@@ -62,8 +62,6 @@
 </script></section><section data-markdown><script type="text/template">
 ![图片7](assets/图片7.png)
 </script></section><section data-markdown><script type="text/template">
-![image-20230408222525227](assets/image-20230408222525227.png)
-</script></section><section data-markdown><script type="text/template">
 ![image-20230408232356419](assets/image-20230408232356419.png)
 </script></section><section data-markdown><script type="text/template">
 ![image-20230409104957428](assets/image-20230409104957428.png)
@@ -80,19 +78,15 @@
 </script></section><section data-markdown><script type="text/template">
 ![image-20230409105055365](assets/image-20230409105055365.png)
 </script></section><section data-markdown><script type="text/template">
-![image-20230408222634812](assets/image-20230408222634812.png)
-</script></section><section data-markdown><script type="text/template">
 ![image-20230408222726962](assets/image-20230408222726962.png)
 </script></section><section data-markdown><script type="text/template">
 ![image-20230408222732834](assets/image-20230408222732834.png)
 </script></section><section data-markdown><script type="text/template">
 ![image-20230408222753370](assets/image-20230408222753370.png)
 </script></section><section data-markdown><script type="text/template">
-![image-20230408222801190](assets/image-20230408222801190.png)
-</script></section><section data-markdown><script type="text/template">
 ![image-20230408222941472](assets/image-20230408222941472.png)
-</script></section><section data-markdown><script type="text/template">
-![image-20230408222947251](assets/image-20230408222947251.png)
+
+
 </script></section><section data-markdown><script type="text/template">
 ### 预处理
 
@@ -118,7 +112,9 @@
 </script></section><section data-markdown><script type="text/template">
 ### 剪枝(pruning)
 
-由于在回溯算法过程中，多余的珠子总数(`total_las`)单调非减，因此如果在其中一次搜索中计算得到的`total_las`超过当前最小值`min⁡_total_las`，我们将直接回溯，不再继续搜索。<style type="text/css"> p {text-align: left;}</style>
+由于在回溯算法过程中，多余的珠子总数(`total_las`)单调非减，因此如果在其中一次搜索中计算得到的`total_las`超过当前最小值`min⁡_total_las`，我们将直接回溯，不再继续搜索。
+
+当搜索到最后一串时仍然无法满足要求，可以判断当前搜索树的右子树不能满足条件，可以将其一并剪去。<style type="text/css"> p {text-align: left;}</style>
 </script></section></section><section ><section data-markdown><script type="text/template">
 ## 测试结果
 
