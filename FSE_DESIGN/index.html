@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>MIPS展示</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./dist/reset.css" />
+    <link rel="stylesheet" href="./dist/reveal.css" />
+    <link rel="stylesheet" href="./dist/theme/serif.css" id="theme" />
+    <link rel="stylesheet" href="./css/highlight/base16/zenburn.css" />
+
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template">
+
+## MIPS模拟器
+
+#### 王伟杰 李志民 戴卿
+
+##### 2023-5-22
+</script></section><section ><section data-markdown><script type="text/template">
+## 需求分析
+</script></section><section data-markdown><script type="text/template">
+## 项目描述
+</script></section><section data-markdown><script type="text/template">
+MIPS是一种精简指令集计算机（RISC）体系结构，广泛应用于嵌入式系统、教学和科研等领域。MIPS指令集简单、规整、高效，易于理解和实现。为了帮助学习者更好地掌握MIPS体系结构和指令系统，我们实现了一个MIPS模拟器软件，可以在PC上模拟MIPS处理器的各种功能和操作。
+</script></section><section data-markdown><script type="text/template">
+## 功能需求
+</script></section><section data-markdown><script type="text/template">
+1. **汇编**。
+
+2. **反汇编**。
+
+3. **程序执行时的系统状态模拟**。
+
+4. **整数（补码）、浮点数的表示、转换和运算**。
+</script></section><section data-markdown><script type="text/template">
+## 实现指令集
+</script></section><section data-markdown><script type="text/template">
+26种指令，涵盖常见所有MIPS指令！
+</script></section><section data-markdown><script type="text/template">
+| 指令             | 描述               |
+| ---------------- | ------------------ |
+| and rd,rs,rt     | 与运算             |
+| or rd,rs,rt      | 或运算             |
+| xor rd,rs,rt     | 抑或运算           |
+| nor rd,rs,rt     | 取反运算           |
+| add rd,rs,rt     | 加运算             |
+| sub rd,rs,rt     | 减运算             |
+| slt rd,rs,rt     | rd=rs<rt           |
+| jr rs            | 跳转至内存器内PC值 |
+</script></section><section data-markdown><script type="text/template">
+| 指令             | 描述               |
+| ---------------- | ------------------ |
+| sll rd,rt,sa     | rt左移sa位给rd     |
+| srl rd,rt,sa     | rt右移sa位给rd     |
+| ori rs,rt,imm    | rs与imm或赋给rt    |
+| andi rt,rs,imm   | 与立即数           |
+| xori rt,rs,imm   | 异或立即数         |
+| lui rt,imm       | 32位的高16位       |
+| addi rt,rs,imm   | 加 立即数          |
+| slti rt,rs,imm   | rd=rs<imm          |
+</script></section><section data-markdown><script type="text/template">
+| 指令             | 描述               |
+| ---------------- | ------------------ |
+| beq rs,rt,offset | rs=rt跳转          |
+| j target         | 跳转               |
+| bne rs,rt,offset | rs!=rt跳转         |
+| bgez rs,offset   | rs>=0跳转          |
+| bltz rs,offset   | rs<0跳转           |
+| bgtz rs,offset   | rs>0跳转           |
+| blez rs,offset   | rs<=0跳转          |
+| jal target       | 跳转并保留返回地址 |
+</script></section><section data-markdown><script type="text/template">
+| 指令             | 描述               |
+| ---------------- | ------------------ |
+| lw rt,offset(rs) | 取                 |
+| sw rt,offset(rs) | 存                 |
+</script></section><section data-markdown><script type="text/template">
+## 性能需求
+</script></section><section data-markdown><script type="text/template">
+- **响应时间**
+- **内存占用**
+- **稳定性**
+- **扩展性**
+</script></section><section data-markdown><script type="text/template">
+## 可维护性需求
+</script></section><section data-markdown><script type="text/template">
+- 功能性能需求。这是指软件能够实现的基本功能
+- 软件在执行功能时所消耗的时间和空间资源，以及对外部环境的影响。
+- 软件应该具有较高的稳定性，尽量避免出现崩溃、死锁等故障。
+- 兼容性性能需求。
+
+- 软件应该使用标准的编码规范和注释规范
+</script></section><section data-markdown><script type="text/template">
+- 软件应该提供完善的文档
+- 软件应该提供有效的错误处理和异常处理机制
+- 软件应该遵循开放封闭原则，即对扩展开放，对修改封闭
+- 严谨的单元测试
+</script></section></section><section ><section data-markdown><script type="text/template">
+## 项目设计
+</script></section><section data-markdown><script type="text/template">
+## 模块划分
+</script></section><section data-markdown><script type="text/template">
+![image-20230517130253923](./slides.assets/image-20230517130253923.png)
+</script></section><section data-markdown><script type="text/template">
+## 执行概念
+</script></section><section data-markdown><script type="text/template">
+模拟器提供了四种执行模式：汇编模式、反汇编模式、调试模式和计算模式。
+</script></section><section data-markdown><script type="text/template">
+## 接口设计
+</script></section><section data-markdown><script type="text/template">
+## 例：Binary类
+</script></section><section data-markdown><script type="text/template">
+![image-20230517130622282](./slides.assets/image-20230517130622282.png)
+</script></section><section data-markdown><script type="text/template">
+## 运行设计
+</script></section><section data-markdown><script type="text/template">
+## 汇编模块
+</script></section><section data-markdown><script type="text/template">
+- 读取源代码文件：从编辑区读取用户输入的MIPS汇编语言源代码文件，并进行格式检查和错误提示。
+- 分词：将源代码文件分为单个的指令和参数，例如将`add $t0, $s1, $s2`分为`add`、`$t0`、`$s1`和`$s2`。
+- 语法分析：检查指令的正确性和参数的合法性，并生成对应的机器码。
+</script></section><section data-markdown><script type="text/template">
+## 反汇编模块
+</script></section><section data-markdown><script type="text/template">
+- 读取机器码文件：从编辑区读取用户输入的二进制机器码文件。
+- 解码：将机器码解码为MIPS指令和参数。
+- 输出源代码：将解码后的源代码输出到显示区，供用户查看和编辑。
+</script></section><section data-markdown><script type="text/template">
+## 程序执行模块
+</script></section><section data-markdown><script type="text/template">
+- 初始化：初始化模拟器的各个组件，包括寄存器、内存、堆栈等。
+- 读取代码：从编辑区读取用户输入的代码，并将其载入内存中。
+- 执行程序：按照程序计数器指向的指令，执行指令并更新寄存器、内存、堆栈等组件的状态。
+- 显示结果：在显示区显示程序执行过程中寄存器、内存、堆栈等组件的状态，并输出程序的运行结果。
+</script></section><section data-markdown><script type="text/template">
+## 数值运算模块
+</script></section><section data-markdown><script type="text/template">
+- 整数（补码）运算：支持整数加减乘除、逻辑运算、移位运算等基本运算，同时对溢出等异常情况进行处理。
+- 浮点数表示和转换：支持整数、单精度浮点数、双精度浮点数的二进制、十进制、十六进制表示和转换。
+- 浮点数运算：支持整数、单精度浮点数、双精度浮点数的加减乘除
+</script></section><section data-markdown><script type="text/template">
+## 需求回溯
+</script></section><section data-markdown><script type="text/template">
+## 功能性需求回溯
+</script></section><section data-markdown><script type="text/template">
+![image-20230517131201748](./slides.assets/image-20230517131201748.png)
+</script></section><section data-markdown><script type="text/template">
+## 性能需求回溯
+</script></section><section data-markdown><script type="text/template">
+![image-20230517131227076](./slides.assets/image-20230517131227076.png)
+</script></section></section><section ><section data-markdown><script type="text/template">
+## 测试部分
+</script></section><section data-markdown><script type="text/template">
+## 测试对象
+</script></section><section data-markdown><script type="text/template">
+MIPS模拟器软件及其各个模块实现。重点测试极端情况下软件的表现和鲁棒性。
+</script></section><section data-markdown><script type="text/template">
+## 测试环境
+</script></section><section data-markdown><script type="text/template">
+- 操作系统：Windows 10 64位
+- 处理器：Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz 2.81 GHz
+- 内存：16GB
+</script></section><section data-markdown><script type="text/template">
+## 测试进度安排
+</script></section><section data-markdown><script type="text/template">
+![image-20230517131423771](./slides.assets/image-20230517131423771.png)
+</script></section><section data-markdown><script type="text/template">
+## 测试内容
+</script></section><section data-markdown><script type="text/template">
+## 汇编功能
+</script></section><section data-markdown><script type="text/template">
+![image-20230517131742091](./slides.assets/image-20230517131742091.png)
+</script></section><section data-markdown><script type="text/template">
+## 反汇编功能
+</script></section><section data-markdown><script type="text/template">
+
+</script></section><section data-markdown><script type="text/template">
+## 程序执行模块
+</script></section><section data-markdown><script type="text/template">
+![image-20230517131831250](./slides.assets/image-20230517131831250.png)
+</script></section><section data-markdown><script type="text/template">
+## 数值计算模块
+</script></section><section data-markdown><script type="text/template">
+![image-20230517131905030](./slides.assets/image-20230517131905030.png)
+</script></section><section data-markdown><script type="text/template">
+![image-20230517131922022](./slides.assets/image-20230517131922022.png)
+</script></section><section data-markdown><script type="text/template">
+## 性能测试
+</script></section><section data-markdown><script type="text/template">
+通过性能测试，我们将对系统在各种负载下的性能进行测试，也就是测试MIPS软件的承载能力。我们对系统的性能测试将以负载测试为主。
+</script></section><section data-markdown><script type="text/template">
+​	使用自编写的测试程序进行负载测试，模拟不同负载下MIPS模拟器的性能表现。测试步骤如下：
+
+- 分别执行10个不同的MIPS程序，程序大小和复杂度不同，包括整数运算、浮点数运算、条件语句、循环语句等；
+- 监控模拟器的CPU占用率、内存占用率、执行时间等指标。
+</script></section><section data-markdown><script type="text/template">
+- 执行时间：程序1-4平均0.21秒，程序5-8平均0.38秒，程序9-10平均0.95秒；
+- CPU占用率：平均0.5%，峰值0.7%
+- 内存占用率：平均2MB，峰值3MB
+</script></section><section data-markdown><script type="text/template">
+MIPS模拟器在不同负载下的性能表现存在较大差异，运行时间差异明显，但总体表现良好，CPU占用率、内存占用率均在可接受范围内。
+</script></section><section data-markdown><script type="text/template">
+## 边界值测试
+</script></section><section data-markdown><script type="text/template">
+![image-20230517132118832](./slides.assets/image-20230517132118832.png)
+
+![image-20230517132128445](./slides.assets/image-20230517132128445.png)
+</script></section><section data-markdown><script type="text/template">
+![image-20230517132143614](./slides.assets/image-20230517132143614.png)
+
+![image-20230517132151614](./slides.assets/image-20230517132151614.png)
+</script></section><section data-markdown><script type="text/template">
+![image-20230517132203407](./slides.assets/image-20230517132203407.png)
+</script></section><section data-markdown><script type="text/template">
+## 缺陷和限制
+</script></section><section data-markdown><script type="text/template">
+尽管我们的软件表现出色，但仍存在一些缺陷和限制。其中一些缺陷和限制包括：
+
+-   对于其他指令的处理可能不够完善，比如对于除法指令的支持不够完善。
+-   界面可能不够友好，需要更多的优化和改进。
+-   对于某些特殊边界情况，如内存溢出等，软件会出现崩溃情况。
+-   MIPS汇编代码注释不能换行，代码不能有`tab`
+
+我们将继续改进软件，以使其更加完善和稳定。
+</script></section></section><section  data-markdown><script type="text/template">
+## 感 谢 聆 听！
+</script></section></div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/highlight/highlight.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/math/math.js"></script>
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        slideNumber: true,
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath
+        ]
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {}, queryOptions);
+    </script>
+
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+</html>
