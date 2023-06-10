@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>ADS_Group1</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./dist/reset.css" />
+    <link rel="stylesheet" href="./dist/reveal.css" />
+    <link rel="stylesheet" href="./dist/theme/serif.css" id="theme" />
+    <link rel="stylesheet" href="./css/highlight/base16/zenburn.css" />
+
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template">
+
+## MapReduce
+
+#### 王伟杰 李志民 戴卿
+
+##### 2023-6-12
+</script></section><section ><section data-markdown><script type="text/template">
+## 数据结构
+</script></section><section data-markdown><script type="text/template">
+#### `unordered_map<string, int> WordCountMap`
+</script></section><section data-markdown><script type="text/template">
+* string: 正在计数的单词
+* int: 单词出现的次数
+
+WordCountMap用于存储单词计数对，旨在为搜索和插入生成一个有效的模型。
+
+<style type="text/css"> {text-align: left;}</style>
+</script></section></section><section ><section data-markdown><script type="text/template">
+## 程序设计
+</script></section><section data-markdown><script type="text/template">
+### 串行版本
+
+串行过程是从文档中一个接一个地读取单词，并将其插入WordCountMap中。
+
+<style type="text/css"> {text-align: left;}</style>
+</script></section><section data-markdown><script type="text/template">
+![image-20230610145218429](assets/image-20230610145218429.png)
+</script></section><section data-markdown><script type="text/template">
+### 并行版本
+</script></section><section data-markdown><script type="text/template">
+MapReduce模型由两个主要阶段组成：**映射阶段**和**减少阶段**。在映射阶段和减少阶段之间，我们有shuffle阶段，其中键值对按键分组。因此，我们不需要平行版的地图。
+</script></section><section data-markdown><script type="text/template">
+![MapReduce.drawio](assets/MapReduce.drawio.png)
+</script></section><section data-markdown><script type="text/template">
+### Map阶段
+</script></section><section data-markdown><script type="text/template">
+输入测试单词，将其划分为更小的块，并在集群中的多个节点上并行处理。每个节点对输入数据应用一个映射函数，生成一组中间键值对（word，count）。
+
+<style type="text/css"> {text-align: left;}</style>
+</script></section><section data-markdown><script type="text/template">
+![image-20230610145737512](assets/image-20230610145737512.png)
+</script></section><section data-markdown><script type="text/template">
+### Reduce阶段
+</script></section><section data-markdown><script type="text/template">
+中间键值对以按键分组，并在多个节点上并行处理。每个节点将reduce函数应用于与每个键关联的值，从而生成一组输出键值对。
+</script></section><section data-markdown><script type="text/template">
+![image-20230610145804159](assets/image-20230610145804159.png)
+</script></section></section><section ><section data-markdown><script type="text/template">
+## 测试结果
+</script></section><section data-markdown><script type="text/template">
+### 测试数据集
+
+Link: http://www.openslr.org/12/
+</script></section><section data-markdown><script type="text/template">
+### 测试环境
+</script></section><section data-markdown><script type="text/template">
+* OS: macOS Ventura 13.4
+
+* Architecture: arm64
+* CPU: Apple Silicon M2
+* CPUs: 8 (4 + 4)
+
+* Memory: 16G
+* Power supply: On battery
+</script></section><section data-markdown><script type="text/template">
+### 测试结果
+</script></section><section data-markdown><script type="text/template">
+![image-20230610150828853](assets/image-20230610150828853.png)
+</script></section><section data-markdown><script type="text/template">
+![image-20230610150840843](assets/image-20230610150840843.png)
+</script></section><section data-markdown><script type="text/template">
+### 并行 VS 串行
+</script></section><section data-markdown><script type="text/template">
+![image-20230610150956638](assets/image-20230610150956638.png)
+</script></section><section data-markdown><script type="text/template">
+![Se-vs-Pe](assets/Se-vs-Pe.png)
+</script></section><section data-markdown><script type="text/template">
+- Large Scale
+
+| size/(MB)            | 773    |
+| -------------------- | ------ |
+| Serial Edition/(s)   | 32.209 |
+| Parallel Edition/(s) | 1523.3 |
+</script></section></section><section ><section data-markdown><script type="text/template">
+## 算法与结果分析
+</script></section><section data-markdown><script type="text/template">
+### 串行版本
+</script></section><section data-markdown><script type="text/template">
+WordCountMap是一个基于HashTable的结构。其插入和搜索的时间复杂度为O（1）。那么时间复杂度和空间复杂度分别为：
+
+- T(N)=O(N)
+- S(N)=O(N)
+</script></section><section data-markdown><script type="text/template">
+### 并行版本
+</script></section><section data-markdown><script type="text/template">
+在并行版本中，我们分析最坏情况下的运行时间和工作负载。假设M是映射器的数量，R是Reducer的数量。
+
+- T(N,M,R)=O(N/M+N/R)
+- W(N)=O(N)
+- S(N)=O(N)
+</script></section><section data-markdown><script type="text/template">
+### 测试分析
+</script></section><section data-markdown><script type="text/template">
+根据测试结果，串行版的性能远大于并行版。我们发现，更少的Map任务会带来更好的性能。对此我们提出了一些猜想：
+</script></section><section data-markdown><script type="text/template">
+- 并行过程中存在过多的通信开销。由于并行计算涉及子任务之间的通信和同步。如果通信开销很高，例如频繁的数据传输或等待其他任务完成，则会增加总体执行时间。
+- 资源限制和瓶颈：CPU核心数量不足/内存容量过小
+
+此外，还有其他并行化开销，如任务划分和同步等。
+
+<style type="text/css"> {text-align: left;}</style>
+</script></section></section><section  data-markdown><script type="text/template">
+## Thanks！</script></section></div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/highlight/highlight.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/math/math.js"></script>
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        slideNumber: true,
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath
+        ]
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {}, queryOptions);
+    </script>
+
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+</html>
