@@ -25,10 +25,10 @@
 </script></section><section ><section data-markdown><script type="text/template">
 ## 数据结构
 </script></section><section data-markdown><script type="text/template">
-#### `unordered_map<string, int> WordCountMap`
+### `unordered_map<string, int> WordCountMap`
 </script></section><section data-markdown><script type="text/template">
-* string: 正在计数的单词
-* int: 单词出现的次数
+- string: 正在计数的单词
+- int: 单词出现的次数
 
 WordCountMap用于存储单词计数对，旨在为搜索和插入生成一个有效的模型。
 
@@ -46,7 +46,7 @@ WordCountMap用于存储单词计数对，旨在为搜索和插入生成一个�
 </script></section><section data-markdown><script type="text/template">
 ### 并行版本
 </script></section><section data-markdown><script type="text/template">
-MapReduce模型由两个主要阶段组成：**映射阶段**和**减少阶段**。在映射阶段和减少阶段之间，我们有shuffle阶段，其中键值对按键分组。因此，我们不需要平行版的地图。
+MapReduce模型由两个主要阶段组成：**Map阶段**和**Reduce阶段**。在Map阶段和Reduce阶段之间，我们有Shuffle阶段，其中键值对按键分组。因此，在并行版本中，我们不需要使用哈希表存储键值对。
 </script></section><section data-markdown><script type="text/template">
 ![MapReduce.drawio](assets/MapReduce.drawio.png)
 </script></section><section data-markdown><script type="text/template">
