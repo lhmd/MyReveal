@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>11-20</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./dist/reset.css" />
+    <link rel="stylesheet" href="./dist/reveal.css" />
+    <link rel="stylesheet" href="./dist/theme/night.css" id="theme" />
+    <link rel="stylesheet" href="./css/highlight/base16/zenburn.css" />
+
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template">
+
+## Deep Learning Library Dependency Detection
+
+##### 2023-11-20
+</script></section><section ><section data-markdown><script type="text/template">
+## Direction
+</script></section><section data-markdown><script type="text/template">
+### Existing Tasks
+
+- python库依赖检测
+- java等其他依赖库检测
+- cuda代码性能/正确性检测
+</script></section><section data-markdown><script type="text/template">
+### Preliminary Task Ideas
+
+- 给定code和requirement，检测这个requirement有哪里需要修正
+- 给定code生成requirement
+- 给定requirement，测试这个requirement能不能安装成功/运行时会不会出现问题
+</script></section></section><section ><section data-markdown><script type="text/template">
+## Related Works
+</script></section><section data-markdown><script type="text/template">
+### Motivation
+
+![image-20231119164314160](assets/image-20231119164314160.png)
+</script></section><section data-markdown><script type="text/template">
+- pyego: 提取知识图谱，刻画第三方包、python解释器和系统库之间的关系。查询提取的程序特征，构建包含三种依赖项的程序相关子图，求解子图中的约束输出最新的兼容依赖版本
+- pycon: 认为pyego主要的失败原因是生成的配置中存在依赖冲突和所需库的缺失，他们分别针对库的设置、打包和使用阶段检测潜在的配置问题，并提供了一个基准测试集VLibs，用于评估当前自动依赖推断方法的有效性
+- (在投): 从Stack Overflow上面获取数据，预训练做成问答模型。输入target project，对source code和requirements进行conflict detection，输出version issues和related posts
+</script></section><section data-markdown><script type="text/template">
+- easypip: 不尝试安装依赖关系的情况下定位冲突的依赖关系，并在对原始文件进行最少修改的情况下生成修复方案
+- smartpip: 将依赖问题分为两种：remote dependency updates和affected by the local environment，针对第一种，原本的做法是回溯策略，smartpip的做法是利用离线依赖知识库收集所有所需库函数的版本约束，再将版本约束转换为 SMT 表达式进行求解；第二种，利用本地共享存储库存放所有下载的库，然后需要的时候软连接到环境中，并将这些本地库的版本信息整合到版本约束中，从而使本地库获得更高的优先选择权
+</script></section><section data-markdown><script type="text/template">
+- pycre：构建知识图谱，通过测量已知库与目标代码中使用的第三方资源之间的匹配度来发现候选库，提出了一种启发式图遍历算法，以有效保证软件包之间的兼容性
+
+- DockerizeMe：半自动构建离线知识库，用于推断Python代码片段的环境依赖关系。
+
+- V2：根据代码执行的错误信息搜索合适版本的工作环境
+- SnifferDog：建立了一个 Python 软件包 API 库，用于推断 Jupyter 笔记本的具体版本并还原其执行环境
+</script></section></section><section  data-markdown><script type="text/template">
+## Dataset
+
+- PyPI
+- opensource project
+</script></section><section ><section data-markdown><script type="text/template">
+## Questions
+</script></section><section data-markdown><script type="text/template">
+- 选task
+- 讨论method
+
+</script></section></section></div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/highlight/highlight.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/math/math.js"></script>
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        slideNumber: true,
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath
+        ]
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {}, queryOptions);
+    </script>
+
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+</html>
