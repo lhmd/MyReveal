@@ -42,8 +42,25 @@
 ![image-20231119164314160](assets/image-20231119164314160.png)
 </script></section><section data-markdown><script type="text/template">
 - pyego: 提取知识图谱，刻画第三方包、python解释器和系统库之间的关系。查询提取的程序特征，构建包含三种依赖项的程序相关子图，求解子图中的约束输出最新的兼容依赖版本
+
+![image-20231119221809601](assets/image-20231119221809601.png)
+</script></section><section data-markdown><script type="text/template">
+提取知识图谱
+
+![image-20231119221951728](assets/image-20231119221951728.png)
+</script></section><section data-markdown><script type="text/template">
+- 语法特征：从每个特征文档中的"新特征"部分提取上下文无关的语法特征，手动将提取的26个语法特征中的19个转换为正则表达式
+- 版本依赖：对于第三方包版本lt ( v )，通过分析其在METADATA和requirements . txt文件中的元数据，自顶向下遍历每个包，得到其每个层次的模块
+- 第三方包与系统库：(1)Dockerizeme (2)用 "apt-cache depends "命令获取 aptinstallable 软件包依赖的系统库，与pip库对比，检查相似度
+- 提取完之后放到Neo4j里面（还没看具体实现）代价是三个月同步一次，一次耗时1.5d
+</script></section><section data-markdown><script type="text/template">
+使用pyego
+
+![image-20231119222827486](assets/image-20231119222827486.png)
+</script></section><section data-markdown><script type="text/template">
 - pycon: 认为pyego主要的失败原因是生成的配置中存在依赖冲突和所需库的缺失，他们分别针对库的设置、打包和使用阶段检测潜在的配置问题，并提供了一个基准测试集VLibs，用于评估当前自动依赖推断方法的有效性
 - (在投): 从Stack Overflow上面获取数据，预训练做成问答模型。输入target project，对source code和requirements进行conflict detection，输出version issues和related posts
+- pipreqs：一个python库，生成requirements
 </script></section><section data-markdown><script type="text/template">
 - easypip: 不尝试安装依赖关系的情况下定位冲突的依赖关系，并在对原始文件进行最少修改的情况下生成修复方案
 - smartpip: 将依赖问题分为两种：remote dependency updates和affected by the local environment，针对第一种，原本的做法是回溯策略，smartpip的做法是利用离线依赖知识库收集所有所需库函数的版本约束，再将版本约束转换为 SMT 表达式进行求解；第二种，利用本地共享存储库存放所有下载的库，然后需要的时候软连接到环境中，并将这些本地库的版本信息整合到版本约束中，从而使本地库获得更高的优先选择权
@@ -59,13 +76,16 @@
 
 - PyPI
 - opensource project
+- Libraries.io
 </script></section><section ><section data-markdown><script type="text/template">
 ## Questions
 </script></section><section data-markdown><script type="text/template">
 - 选task
 - 讨论method
+</script></section></section><section  data-markdown><script type="text/template">
+## Next Week...
 
-</script></section></section></div>
+</script></section></div>
     </div>
 
     <script src="./dist/reveal.js"></script>
